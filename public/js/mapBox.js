@@ -1,5 +1,10 @@
 /* eslint-disable */
 export const displayMap = (locations) => {
+  console.log(
+    'Mapbox token available:',
+    Boolean(process.env.MAPBOX_ACCESS_TOKEN),
+  );
+
   // creates the map, passing your access token to associate it with your Mapbox account, and setting the container, initial center, and zoom level
   const map = new mapboxgl.Map({
     accessToken: process.env.MAPBOX_ACCESS_TOKEN,
