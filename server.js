@@ -36,12 +36,21 @@ try {
   console.error('Invalid MongoDB URI:', error.message);
 }
 
+console.log(
+  'Sanitized MongoDB URI:',
+  DB.replace(/^mongodb\+srv:\/\/.*@/, 'mongodb+srv://<credentials>@'),
+);
+
+console.log('URI contains whitespace:', /\s/.test(DB));
+console.log('URI contains quotes:', /['"]/.test(DB));
+console.log('URI contains unescaped characters:', /[<>]/.test(DB));
+
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true,
+    // useUnifiedTopology: true,
   })
   .then(() => console.log('DB connection successful!'));
 
