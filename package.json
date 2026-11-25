@@ -7,7 +7,9 @@
   "bundle": "./public/js/bundle.js",
   "targets": {
     "bundle": {
-      "isLibrary": false
+      "isLibrary": false,
+      "context": "browser",
+      "outputFormat": "global"
     }
   },
   "scripts": {
