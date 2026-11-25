@@ -18,8 +18,23 @@ const app = require('./app');
 
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
-  process.env.DATABASE_PASSWORD,
+  encodeURIComponent(process.env.DATABASE_PASSWORD),
 );
+
+console.log('DATABASE exists:', !!process.env.DATABASE);
+console.log('DATABASE_PASSWORD exists:', !!process.env.DATABASE_PASSWORD);
+console.log('Placeholder replaced:', !DB.includes('<PASSWORD>'));
+
+try {
+  const parsedURI = new URL(DB);
+
+  console.log('MongoDB protocol:', parsedURI.protocol);
+  console.log('MongoDB hostname:', parsedURI.hostname);
+  console.log('MongoDB username exists:', !!parsedURI.username);
+  console.log('MongoDB password exists:', !!parsedURI.password);
+} catch (error) {
+  console.error('Invalid MongoDB URI:', error.message);
+}
 
 mongoose
   .connect(DB, {
