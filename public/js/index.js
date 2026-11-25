@@ -2,6 +2,7 @@
 import '@babel/polyfill';
 
 import { reviewTour } from './review';
+import { showAlert } from './alerts';
 import { updateSettings } from './updateSettings';
 
 const { displayMap } = require('./mapBox');
@@ -98,3 +99,7 @@ if (bookBtn)
     const { tourId, selectedDate } = e.target.dataset;
     bookTour(tourId, selectedDate);
   });
+
+const alertMessage = document.querySelector('body').dataset.alert;
+
+if (alertMessage) showAlert('success', alertMessage, 20);
