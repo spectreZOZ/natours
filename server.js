@@ -21,30 +21,6 @@ const DB = process.env.DATABASE.replace(
   encodeURIComponent(process.env.DATABASE_PASSWORD),
 );
 
-console.log('DATABASE exists:', !!process.env.DATABASE);
-console.log('DATABASE_PASSWORD exists:', !!process.env.DATABASE_PASSWORD);
-console.log('Placeholder replaced:', !DB.includes('<PASSWORD>'));
-
-try {
-  const parsedURI = new URL(DB);
-
-  console.log('MongoDB protocol:', parsedURI.protocol);
-  console.log('MongoDB hostname:', parsedURI.hostname);
-  console.log('MongoDB username exists:', !!parsedURI.username);
-  console.log('MongoDB password exists:', !!parsedURI.password);
-} catch (error) {
-  console.error('Invalid MongoDB URI:', error.message);
-}
-
-console.log(
-  'Sanitized MongoDB URI:',
-  DB.replace(/^mongodb\+srv:\/\/.*@/, 'mongodb+srv://<credentials>@'),
-);
-
-console.log('URI contains whitespace:', /\s/.test(DB));
-console.log('URI contains quotes:', /['"]/.test(DB));
-console.log('URI contains unescaped characters:', /[<>]/.test(DB));
-
 mongoose.connect(DB).then(() => console.log('DB connection successful!'));
 
 const port = process.env.PORT || 3000;
@@ -58,5 +34,12 @@ process.on('unhandledRejection', (err) => {
 
   server.close(() => {
     process.exit(1);
+  });
+});
+
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM RECEIVED, Shutting down gracefully');
+  server.close(() => {
+    console.log('💥 Process terminated!');
   });
 });
